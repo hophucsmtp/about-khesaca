@@ -1,68 +1,63 @@
+# Khesaca Coffee - Automation System
+
+Hệ thống tự động hóa toàn diện cho thương hiệu cà phê Khesaca (Gia đình vận hành).
+
+```mermaid
 flowchart TD
     %% 1. Input & Data Central
     DB[(Google Sheets / Airtable\nCentral Database)] 
-    DB -->|Product, Inventory, Customer, Content Calendar| Core
+    DB -->|Product, Inventory, Customer, Content Calendar| N
 
     subgraph Core [Core Automation Engine]
         N[n8n / Make.com\nOrchestrator]
     end
 
     subgraph AI [AI Intelligence Layer]
-        Claude[Claude 3.5 Sonnet / Opus API]
+        Claude[Claude 3.5 Sonnet API]
         NB[NotebookLM]
-        GPT[GPT-4o / Gemini 2.5]
-        AItools[ElevenLabs • Flux • Kling • CapCut API]
+        GPT[GPT-4o + Gemini]
+        Tools[Flux • Kling • ElevenLabs • CapCut]
     end
 
     N <--> AI
     N <--> DB
 
-    %% 2. Main Pipelines
-    subgraph Research [1. Research & Idea Pipeline - Daily/Weekly]
-        R1[Scan Trending\nGoogle Trends, TikTok Creative Center,\nYouTube Search, Shopee Hot]
-        R2[Tìm Viral Content\nCà phê Khe Sanh, Brewing, Farm Story, ASMR]
-        R3[Competitor Analysis\nKhe Sanh competitors]
-        R1 & R2 & R3 --> Claude
+    %% Main Pipelines
+    subgraph Research [1. Research Pipeline]
+        R1[Trending Scan\nTikTok, YouTube, Google Trends]
+        R1 --> Claude
     end
 
-    subgraph Content [2. Content Creation Pipeline]
-        C1[Generate Ideas + Script\nReels/TikTok/Carousel/Blog]
-        C2[Visual Generation\nFlux / Leonardo / Midjourney]
-        C3[Video Production\nKling AI / Runway / CapCut Auto-edit]
-        C4[Voiceover + Music\nElevenLabs Vietnamese]
-        C5[SEO Blog Post\nSurferSEO / Claude]
-        Claude --> C1 --> C2 --> C3 --> C4 --> C5
+    subgraph Content [2. Content Creation]
+        C1[Generate Script + Caption]
+        C2[Visual & Video AI]
+        C3[SEO Blog]
+        Claude --> C1 --> C2 --> C3
     end
 
-    subgraph Approval [3. Human Review & Approval]
-        H[Bạn + Vợ Review\n(15-30 phút/ngày)\nApprove / Edit nhẹ]
+    subgraph Approval [3. Human Review]
+        H[Bạn + Vợ Review & Approve]
     end
 
-    subgraph Distribution [4. Distribution & Scheduling]
-        S1[Multi-platform Scheduler\nn8n → Meta + TikTok + YT + Zalo]
-        S2[Website Auto Publish\nWordPress]
-        S3[Shopee/Lazada Sync]
-        S4[Email + Zalo OA Sequence]
-        H --> S1 & S2 & S3 & S4
+    subgraph Distribution [4. Distribution]
+        S1[Facebook • Instagram • TikTok • YouTube]
+        S2[Website + Shopee + Lazada]
+        S3[Zalo OA + Email]
+        H --> S1 & S2 & S3
     end
 
-    subgraph Sales [5. Sales & CRM Pipeline]
-        Sale1[Lead Capture\nWebsite + Social + Zalo]
-        Sale2[Chatbot Auto Reply + Qualify]
-        Sale3[Nurturing Sequence\nAbandoned Cart, Follow-up, Loyalty]
-        Sale4[Order Processing\nSync Inventory + GHTK/GHN]
-        Sale5[Upsell / Cross-sell]
+    subgraph Sales [5. Sales Funnel]
+        Sale[Lead → Chatbot → Nurturing → Order → Loyalty]
     end
 
-    subgraph Analytics [6. Analytics & Optimization]
-        Ana[Looker Studio Dashboard\nReal-time Sales + Content Performance]
-        Ana -->|Feedback Loop| DB
-        Ana -->|Insight| Claude
+    subgraph Analytics [6. Analytics]
+        Ana[Looker Studio Dashboard]
+        Ana -->|Feedback| DB
     end
 
     Research --> Content --> Approval --> Distribution --> Sales --> Analytics
     Analytics --> Research
 
-    style Core fill:#fff3e0
-    style AI fill:#e3f2fd
-    style Approval fill:#fce4ec
+    style Core fill:#fff3e0, stroke:#f57c00
+    style AI fill:#e3f2fd, stroke:#1976d2
+    style Approval fill:#fce4ec, stroke:#d81b60
